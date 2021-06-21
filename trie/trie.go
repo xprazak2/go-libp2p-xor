@@ -41,6 +41,17 @@ func (trie *Trie) String() string {
 	return string(b)
 }
 
+func (trie *Trie) MarshalJSON() ([]byte, error) {
+	type Alias Trie
+	return json.Marshal(&struct {
+		*Alias
+		Key string
+	}{
+			Alias: (*Alias)(trie),
+			Key: trie.Key.BitString(),
+	})
+}
+
 func (trie *Trie) Depth() int {
 	return trie.DepthAtDepth(0)
 }
